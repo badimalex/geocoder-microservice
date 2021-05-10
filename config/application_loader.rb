@@ -14,7 +14,6 @@ module ApplicationLoader
   end
 
   def require_app
-    require_dir 'app/helpers'
     require_file 'config/application'
     require_dir 'app'
   end
