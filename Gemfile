@@ -14,6 +14,8 @@ gem "bunny", "~> 2.15.0"
 gem 'faraday'
 gem "faraday_middleware", "~> 1.0"
 
+gem "ougai", "~> 1.8.5"
+
 group :test do
   gem 'rack-test'
   gem 'rspec'
