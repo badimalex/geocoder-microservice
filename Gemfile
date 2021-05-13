@@ -20,3 +20,5 @@ group :test do
   gem 'rack-test'
   gem 'rspec'
 end
+
+gem "amazing_print", "~> 1.3"
