@@ -1,3 +1,5 @@
+require 'benchmark'
+
 channel = RabbitMq.consumer_channel
 
 queue = channel.queue('geocoding', durable: true)
@@ -14,8 +16,15 @@ queue.subscribe(manual_ack: true) do |delivery_info, prop, payload|
   )
 
   if coordinates.present?
+    Metrics.geocoding_requests_total.increment(labels: { result: 'success' })
     client = AdsService::Client.new
-    client.update_coordinates(payload['id'], coordinates)
+
+    Metrics.service_geolocate_time.observe(
+      Benchmark.realtime { client.update_coordinates(payload['id'], coordinates) },
+      labels: { service: 'geolocate' }
+    )
+  else
+    Metrics.geocoding_requests_total.increment(labels: { result: 'failure' })
   end
 
   # todo
